@@ -127,9 +127,10 @@ add_action("switch_theme", "course_theme_deactivate_disable_roles", 10 , 2);
  *  User Herding
  */
 
-// Redirect users who can't edit posts away from any admin section
+// Redirect users who can't edit posts away from any admin section.
+// Note: Do not perform redirect if this request is an AJAX call.
 function low_level_user_redirect_admin() {
-  if ( ! current_user_can('edit_posts') ) {
+  if ( ! current_user_can( 'edit_posts' ) && strpos( $_SERVER['PHP_SELF'], 'admin-ajax.php' ) === false ) {
     wp_redirect( site_url() );
     exit;
   }
